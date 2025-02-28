@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список чатов</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Основные стили */
+        body {
+            background: linear-gradient(45deg, #1f141e, #36223b);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(106, 61, 138, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #5bc4eb;
+            margin-bottom: 20px;
+        }
+
+        /* Стили списка чатов */
+        .chat-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(91, 196, 235, 0.3);
+        }
+
+        .chat-icon {
+            font-size: 40px;
+            color: #5bc4eb;
+            margin-right: 15px;
+        }
+
+        .chat-info {
+            flex-grow: 1;
+        }
+
+        .chat-info h5 {
+            margin: 0;
+            color: white;
+        }
+
+        .chat-link {
+            color: #5bc4eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .chat-link:hover {
+            color: #2c806f;
+            text-decoration: underline;
+        }
+
+        .last-message {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .no-chats {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .btn-back {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #5bc4eb;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            width: fit-content;
+        }
+
+        .btn-back:hover {
+            background: #2c806f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-comments"></i> Мои чаты</h1>
+
+        <ul class="chat-list">
+            {% for teacher in chats %}
+            <li class="chat-item" onclick="window.location.href='{% url 'chat_with_teacher' teacher.id %}'">
+                <i class="fas fa-user-circle chat-icon"></i>
+                <div class="chat-info">
+                    <h5>{{ teacher.name }}</h5>
+                    {% if teacher.id %}
+                        <a href="{% url 'chat_with_teacher' teacher.id %}" class="chat-link">
+                            <i class="fas fa-envelope"></i> Перейти в чат
+                        </a>
+                        <br>
+                        <span class="last-message">
+                            <i class="fas fa-comment-dots"></i> Последнее сообщение: {{ teacher.last_message|default:"Нет сообщений" }}
+                        </span>
+                    {% else %}
+                        <span class="last-message text-danger">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка: у этого чата нет преподавателя.
+                        </span>
+                    {% endif %}
+                </div>
+            </li>
+            {% empty %}
+            <li class="no-chats">
+                <i class="fas fa-ban"></i> Нет активных чатов.
+            </li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'my_profile' %}" class="btn-back"><i class="fas fa-arrow-left"></i> Вернуться в профиль</a>
+    </div>
+</body>
+</html>

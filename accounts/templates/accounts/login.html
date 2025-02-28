@@ -1,0 +1,149 @@
+
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Вход | SkillFlow</title>
+        
+<style>
+    body {
+        background: linear-gradient(145deg, #69409e, #241822);
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .background-circles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .circle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.6;
+        animation: float 6s infinite ease-in-out;
+    }
+
+    /* Верхние круги */
+    .circle:nth-child(1) { width: 150px; height: 150px; background-color: #69409e; top: 5%; left: 20%; animation-delay: 0s; }
+    .circle:nth-child(2) { width: 180px; height: 180px; background-color: #5bc4eb; top: 5%; right: 60%; animation-delay: 1s; }
+
+    /* Нижние круги */
+    .circle:nth-child(3) { width: 130px; height: 130px; background-color: #69409e; bottom: 5%; left: 50%; animation-delay: 2s; }
+    .circle:nth-child(4) { width: 180px; height: 180px; background-color: #5bc4eb; bottom: 5%; right: -10%; animation-delay: 3s; }
+
+    .circle:nth-child(5) { width: 80px; height: 80px; background-color: #69409e; bottom: 20%; left: 8%; animation-delay: 4s; }
+    .circle:nth-child(6) { width: 80px; height: 80px; background-color: #5bc4eb; top: 20%; right: 5%; animation-delay: 1s; }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .container {
+        background: rgba(134, 86, 198, 0.6); /* Прозрачный фон */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+    position: relative;
+    z-index: 1;
+    }
+
+    .container img {
+        max-width: 250px;
+        margin-bottom: 0px;
+    }
+
+
+    .container h1 {
+        font-size: 24px;
+        color: #241822;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .form-group label {
+        font-size: 14px;
+        color: #241822;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #69409e;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background-color: rgb(87, 138, 201);
+        border: none;
+        padding: 10px;
+        width: 100%;
+        color: #241822;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #5bc4eb;
+    }
+
+    .link {
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .link a {
+        color: #241822;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+    </head>
+    <body>
+        <div class="background-circles">
+            <div class="circle"></div><div class="circle"></div><div class="circle"></div>
+            <div class="circle"></div><div class="circle"></div><div class="circle"></div>
+        </div>
+        <div class="container">
+            {% load static %}
+<img src="{% static 'images/SkillFlowLog.png' %}" alt="SkillFlow Logo">
+
+            <h1>Вход</h1>
+            <form method="POST">{% csrf_token %}
+                <div class="form-group"><label>Имя пользователя</label><input type="text" name="username" class="form-control" required></div>
+                <div class="form-group"><label>Пароль</label><input type="password" name="password" class="form-control" required></div>
+                <button type="submit" class="btn-primary">Войти</button>
+            </form>
+            <div class="link">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></div>
+        </div>
+    </body>
+    </html>
+    

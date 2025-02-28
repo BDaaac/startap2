@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Выберите объявление для редактирования</h1>
+    <a href="{% url 'create_teacher_ad' %}" class="btn btn-success mb-3">Добавить объявление</a>
+
+    <div class="list-group">
+      {% for ad in ads %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ ad.title }}</span>
+          <a href="{% url 'edit_teacher_ad' ad.id %}" class="btn btn-primary">Редактировать</a>
+        </div>
+      {% empty %}
+        <p>У вас пока нет объявлений.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

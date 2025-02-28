@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>TeachFinder - Редактировать преподавательский профиль</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    :root {
+      --black: #241822;
+      --purple: #6a3d8a;
+      --blue: #5bc4eb;
+      --light-green: #5ba56e;
+      --dark-green: #2c806f;
+      --white: #ffffff;
+    }
+    body {
+      background: linear-gradient(45deg, var(--black), #36223b);
+      color: var(--white);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    .container-custom {
+      max-width: 800px;
+      margin: 30px auto;
+      background: rgba(106, 61, 138, 0.25);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--blue);
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .btn-custom {
+      display: inline-block;
+      background: var(--light-green);
+      color: var(--white);
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 20px 5px 0;
+    }
+    .btn-custom:hover {
+      background: var(--dark-green);
+    }
+
+    /* Стили для объявлений */
+    .ads-section {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+    }
+    .ads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .ad-card {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    .ad-card:hover {
+      transform: scale(1.03);
+    }
+    .ad-card h3 {
+      margin-bottom: 10px;
+      color: var(--blue);
+    }
+    .btn-danger {
+      background: #d9534f;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .btn-danger:hover {
+      background: #c9302c;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container-custom">
+    <h1>Редактировать преподавательский профиль</h1>
+    <form action="{% url 'my_teacher_profile' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-custom">Сохранить изменения</button>
+    </form>
+
+    <!-- Раздел объявлений -->
+    <div class="ads-section">
+      <h2>Мои объявления</h2>
+
+      {% if teacher_ads %}
+          <div class="ads-grid">
+              {% for ad in teacher_ads %}
+                  <div class="ad-card">
+                      <h3>{{ ad.title }}</h3>
+                      <p>{{ ad.description|truncatechars:100 }}</p>
+                      <p><strong>Цена:</strong> {{ ad.price }} тенге</p>
+                      <a href="{% url 'edit_teacher_ad' ad.id %}" class="btn-custom">Редактировать</a>
+                      <a href="{% url 'delete_teacher_ad' ad.id %}" class="btn-danger">Удалить</a>
+                  </div>
+              {% endfor %}
+          </div>
+      {% else %}
+          <p>У вас пока нет объявлений.</p>
+      {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="{% url 'my_profile' %}" class="btn btn-light">Вернуться к профилю</a>
+    </div>
+  </div>
+</body>
+</html>

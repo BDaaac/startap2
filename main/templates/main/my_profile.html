@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>TeachFinder - Мой профиль</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #1f141e;
+      --purple: #6a3d8a;
+      --blue: #5bc4eb;
+      --light-green: #5ba56e;
+      --dark-green: #2c806f;
+      --gold: #ffd700;
+      --white: #ffffff;
+    }
+    body {
+      background: linear-gradient(45deg, var(--black), #36223b);
+      color: var(--white);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    .profile-container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: rgba(106, 61, 138, 0.25);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    .avatar {
+      display: block;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      object-fit: cover;
+      border: 3px solid var(--blue);
+      cursor: pointer;
+    }
+    .name {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: var(--blue);
+    }
+    .info, .bio, .chat-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+    .info p, .bio p, .chat-section p {
+      margin: 5px 0;
+      font-size: 1.1rem;
+    }
+    .info strong {
+      color: var(--blue);
+    }
+    .btn-custom {
+      display: inline-block;
+      background: var(--light-green);
+      color: var(--white);
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 10px 5px;
+    }
+    .btn-custom:hover {
+      background: var(--dark-green);
+    }
+
+    /* Модальное окно для аватара */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      position: relative;
+      margin: 10% auto;
+      padding: 0;
+      border: none;
+      max-width: 50%;
+      max-height: 80%;
+    }
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+    .close {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      color: var(--white);
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--purple);
+      border-radius: 50%;
+      padding: 0 10px;
+    }
+    .favorites {
+    margin-bottom: 20px;
+  }
+  .favorites h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--blue);
+  }
+  .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .favorite-teacher {
+    text-align: center;
+    background: none; /* Убираем прозрачный фон */
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+  }
+  .favorite-teacher:hover {
+    transform: scale(1.05);
+  }
+  .favorite-teacher img {
+    width: 80px;   /* Уменьшаем ширину */
+    height: 80px;  /* Уменьшаем высоту */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--blue);
+    margin-bottom: 5px;
+  }
+  .favorite-teacher p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+
+
+  .btn-container {
+      display: grid;             /* Используем сетку для симметрии */
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Создаём симметричные колонки */
+      gap: 20px;                 /* Расстояние между кнопками */
+      justify-content: center;   /* Центрируем содержимое */
+      padding: 20px;             /* Отступы вокруг контейнера */
+  }
+
+  .btn-custom {
+      display: flex;             /* Используем flexbox для выравнивания иконки */
+      justify-content: center;   /* Центрируем по горизонтали */
+      align-items: center;       /* Центрируем по вертикали */
+      background: #5bc4eb;       /* Цвет кнопок */
+      color: white;              /* Цвет иконок */
+      width: 60px;               /* Фиксированный размер для симметрии */
+      height: 60px;
+      border: none;              /* Убираем границу */
+      border-radius: 50%;        /* Делаем кнопки круглыми */
+      text-decoration: none;     /* Убираем подчеркивание */
+      font-size: 20px;           /* Размер иконок */
+      transition: background 0.3s ease; /* Анимация на hover */
+  }
+
+  .btn-custom:hover {
+      background: #2c806f;       /* Цвет кнопок при наведении */
+  }
+
+  /* Обновленные стили для контейнера кнопок */
+  .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 30px 20px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+  }
+
+  /* Стили для кнопок */
+  .btn-custom {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--blue);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  /* Эффект при наведении */
+  .btn-custom:hover {
+      background: var(--dark-green);
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 8px 25px rgba(91, 196, 235, 0.4);
+  }
+
+  /* Анимация волны при клике */
+  .btn-custom::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s;
+  }
+
+  .btn-custom:active::after {
+      width: 200px;
+      height: 200px;
+  }
+
+  /* Адаптивность */
+  @media (max-width: 768px) {
+      .btn-container {
+          gap: 20px;
+          padding: 20px 10px;
+      }
+
+      .btn-custom {
+          width: 60px;
+          height: 60px;
+          font-size: 18px;
+      }
+  }
+
+  @media (max-width: 480px) {
+      .btn-custom {
+          width: 50px;
+          height: 50px;
+          font-size: 16px;
+      }
+  }
+
+  /* Анимация иконок */
+  .btn-custom i {
+      transition: transform 0.3s ease;
+  }
+
+  .btn-custom:hover i {
+      transform: rotate(360deg);
+  }
+      .btn-container {
+    display: flex;
+    justify-content: center;  /* Центрирует кнопки по горизонтали */
+    gap: 20px; /* Добавляет расстояние между кнопками */
+    margin-top: 20px;
+}
+
+.btn-custom {
+    background: #5ba56e;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    text-decoration: none;
+    font-size: 24px;
+    transition: background 0.3s ease;
+}
+
+.btn-custom:hover {
+    background: #2c806f;
+}
+   /* Общие стили кнопок */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Расстояние между кнопками */
+    margin-top: 20px;
+}
+
+.btn-custom {
+    background: var(--blue);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 24px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-custom:hover {
+    background: var(--dark-green);
+    transform: scale(1.1);
+}
+
+/* Добавляем анимацию вращения иконок */
+.btn-custom i {
+    transition: transform 0.3s ease;
+}
+
+.btn-custom:hover i {
+    transform: rotate(360deg);
+}
+.balance-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.2rem;
+}
+
+.balance-amount {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+</style>
+
+</head>
+<body>
+  <div class="profile-container">
+    <!-- Аватар -->
+    {% if user.profile.avatar %}
+      <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.name }}" class="avatar" id="avatarImage">
+    {% else %}
+      <img src="https://via.placeholder.com/180" alt="" class="avatar">
+    {% endif %}
+
+    <!-- Имя -->
+   <div class="name">
+  {{ user.username|default:"Имя не задано" }}
+</div>
+
+
+    <!-- Основная информация -->
+    <div class="info">
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Номер телефона:</strong> {{ user.profile.phone|default:"Не указан" }}</p>
+      {% if user.profile.website %}
+        <p><strong>Сайт:</strong> <a href="{{ user.profile.website }}" style="color: var(--blue); text-decoration: none;">{{ user.profile.website }}</a></p>
+      {% endif %}
+    </div>
+
+    <!-- Биография -->
+    <div class="bio">
+      <h2>О себе</h2>
+      <p>{{ user.profile.bio|default:"Описание не задано." }}</p>
+    </div>
+
+
+<!-- Блок избранного преподавателей -->
+    {% if user.profile.favorite_teachers.all %}
+    <div class="favorites">
+      <h2>Избранные преподаватели</h2>
+      <div class="favorites-grid">
+        {% for teacher in user.profile.favorite_teachers.all %}
+          <a href="{% url 'teacher_detail' teacher.id %}" style="text-decoration: none; color: inherit;">
+            <div class="favorite-teacher">
+              {% if teacher.avatar %}
+                <img src="{{ teacher.avatar.url }}" alt="{{ teacher.name }}">
+              {% else %}
+                <img src="https://via.placeholder.com/100" alt="Нет аватара">
+              {% endif %}
+              <p>{{ teacher.name }}</p>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+
+<!-- Кнопки управления -->
+<div class="btn-container">
+  <a href="{% url 'edit_profile' %}" class="btn-custom">
+    <i class="fas fa-user-edit"></i>
+  </a>
+<a href="{% url 'chat_list' %}" class="btn-custom">
+    <i class="fas fa-comments"></i>
+</a>
+  <a href="{% url 'my_teacher_ads' %}" class="btn-custom">
+    <i class="fas fa-user-tie"></i>
+  </a>
+
+  <a href="{% url 'profile' %}" class="btn-custom become-teacher-btn">
+    <i class="fas fa-chalkboard-teacher"></i>
+  </a>
+
+  <a href="{% url 'menu' %}" class="btn-custom">
+    <i class="fas fa-sign-out-alt"></i>
+  </a>
+</div>
+
+
+
+
+
+  <!-- Модальное окно для полноразмерного аватара -->
+  <div id="avatarModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      {% if user.profile.avatar %}
+        <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.name }}">
+      {% else %}
+        <img src="https://via.placeholder.com/300" alt="Нет аватара">
+      {% endif %}
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Модальное окно для аватара
+    const avatarImage = document.getElementById('avatarImage');
+    const modal = document.getElementById('avatarModal');
+    const closeModal = document.getElementById('closeModal');
+
+    if (avatarImage) {
+      avatarImage.addEventListener('click', function() {
+        modal.style.display = 'block';
+      });
+    }
+
+    closeModal.addEventListener('click', function() {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+    const chatList = document.getElementById('chatList');
+    const showChatsButton = document.getElementById('showChatsButton');
+
+    showChatsButton.addEventListener('click', () => {
+        if (chatList.style.display === 'none' || chatList.style.display === '') {
+            chatList.style.display = 'block';
+        } else {
+            chatList.style.display = 'none';
+        }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Добавить товар в магазин</h2>
+    <div class="card p-4 shadow-lg" style="max-width: 600px; margin: auto; background: rgba(255, 255, 255, 0.1); border-radius: 15px;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                {{ form.name }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Описание</label>
+                {{ form.description }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Цена</label>
+                {{ form.price }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Изображение</label>
+                {{ form.image }}
+            </div>
+            <div class="form-check mb-3">
+                {{ form.available }}
+                <label class="form-check-label">Доступно для покупки</label>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Добавить товар</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

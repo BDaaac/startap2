@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>TeachFinder - {{ teacher.name }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --black: #241822;
+      --purple: #69409e;
+      --blue: #5bc4eb;
+      --light-green: #5ba56e;
+      --dark-green: #2c806f;
+      --white: #ffffff;
+    }
+    body {
+      background: linear-gradient(45deg, var(--black), #36223b);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .application-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: rgba(105, 64, 158, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 2px solid var(--purple);
+      padding: 2.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .form-section {
+      margin-bottom: 2.5rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      transition: transform 0.3s ease;
+    }
+    .form-section:hover {
+      transform: translateY(-3px);
+    }
+    .custom-input {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid var(--purple);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .custom-input:focus {
+      background: rgba(255,255,255,0.15);
+      border-color: var(--blue);
+      box-shadow: 0 0 15px var(--blue);
+    }
+    .btn-custom {
+      background: var(--light-green);
+      color: var(--white);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 15px;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    .btn-custom:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    .profile-avatar {
+      display: block;
+      width: 300px;    /* Размер аватара */
+      height: 300px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    h1 {
+      color: var(--blue);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    h4 {
+      margin-bottom: 1rem;
+    }
+    label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+    p {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    /* Стили модального окна для аватара */
+    .modal {
+      display: none; /* Скрыто по умолчанию */
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      position: relative;
+      margin: 10% auto;  /* Отступ сверху, контент центрируется */
+      padding: 0;
+      border: none;
+      max-width: 50%;   /* Ограничение по ширине */
+      max-height: 80%;  /* Ограничение по высоте */
+    }
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+    .close {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      color: var(--white);
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--purple);
+      border-radius: 50%;
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="application-container">
+    <!-- Секция аватара -->
+    {% if teacher.avatar %}
+      <img src="{{ teacher.avatar.url }}" alt="{{ teacher.name }}" class="profile-avatar" id="avatarImage">
+    {% else %}
+      <p class="text-center">Файл не выбран</p>
+    {% endif %}
+
+    <!-- Секция основной информации -->
+    <div class="form-section">
+      <h4 class="mb-3">📝 Основная информация</h4>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label>Имя:</label>
+          <input type="text" class="form-control custom-input" value="{{ teacher.name }}" readonly>
+        </div>
+        <div class="col-md-6">
+          <label>Номер телефона:</label>
+          <input type="text" class="form-control custom-input" value="{{ teacher.phone }}" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция выбора направлений -->
+      <div class="form-section">
+  <h4 class="mb-3">📊 Уровень знаний</h4>
+  <input type="text" class="form-control custom-input" value="{{ teacher.skill_level }}" readonly>
+</div>
+
+    <!-- Секция выбора направлений -->
+    <div class="form-section">
+      <h4 class="mb-3">🎯 Основные направления</h4>
+      <input type="text" class="form-control custom-input" value="{{ teacher.directions }}" readonly placeholder="Например: Программирование, Дизайн, Маркетинг, Иностранные языки, Математика, Физика, Шахматы">
+    </div>
+
+    <!-- Секция навыков -->
+    <div class="form-section">
+      <h4 class="mb-3">💡 Ключевые навыки</h4>
+      <textarea class="form-control custom-input" rows="3" readonly placeholder="Добавьте навык">{{ teacher.skills }}</textarea>
+    </div>
+
+    <!-- Секция опыта преподавания -->
+    <div class="form-section">
+      <h4 class="mb-3">📚 Опыт преподавания</h4>
+      <textarea class="form-control custom-input" rows="4" readonly placeholder="Опишите ваш опыт...">{{ teacher.experience }}</textarea>
+    </div>
+
+    <!-- Секция цены -->
+    <div class="form-section">
+      <h4 class="mb-3">💰 Цена (в тенге) за час </h4>
+      <input type="text" class="form-control custom-input" value="{{ teacher.price }}" readonly placeholder="Цена">
+    </div>
+
+    <a href="{% url 'menu' %}" class="btn-custom">Вернуться к списку</a>
+  </div>
+
+  <!-- Модальное окно для полноразмерного аватара -->
+  <div id="avatarModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      {% if teacher.avatar %}
+        <img src="{{ teacher.avatar.url }}" alt="{{ teacher.name }}">
+      {% else %}
+        <img src="https://via.placeholder.com/300" alt="Placeholder">
+      {% endif %}
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Получаем элементы модального окна
+    const avatarImage = document.getElementById('avatarImage');
+    const modal = document.getElementById('avatarModal');
+    const closeModal = document.getElementById('closeModal');
+
+    if (avatarImage) {
+      avatarImage.addEventListener('click', function() {
+        modal.style.display = 'block';
+      });
+    }
+
+    closeModal.addEventListener('click', function() {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

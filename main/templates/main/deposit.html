@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Пополнение баланса</title>
+    <!-- Подключение Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Общий стиль страницы */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* Карточка пополнения */
+        .balance-card {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Стили для формы */
+        form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        /* Кнопки */
+        button {
+            font-size: 18px;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex flex-column align-items-center justify-content-center vh-100">
+    <div class="balance-card">
+        <h2 class="text-center mb-4">Пополнение баланса</h2>
+        <div class="text-center mb-3">
+            <img src="{% static 'images/coin.png' %}" alt="Баланс" width="50" height="50">
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.amount.label_tag }}
+                {{ form.amount }}
+            </div>
+            <button type="submit" class="btn btn-success w-100">Пополнить</button>
+        </form>
+        <a href="{% url 'menu' %}" class="btn btn-secondary mt-3 w-100">Назад</a>
+    </div>
+</div>
+
+<!-- Подключение Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

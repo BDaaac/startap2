@@ -1,0 +1,12 @@
+
+{% block content %}
+<h2>Настройки профиля</h2>
+<p>Вы купили следующие товары:</p>
+<ul>
+    {% for item in purchased_items %}
+    <li>{{ item.name }}</li>
+    {% empty %}
+    <li>Вы еще ничего не купили.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

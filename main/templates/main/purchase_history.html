@@ -1,0 +1,12 @@
+{% block title %}История покупок{% endblock %}
+
+{% block content %}
+<h1>История покупок</h1>
+<ul>
+    {% for purchase in purchases %}
+        <li>{{ purchase.item.name }} - {{ purchase.purchased_at|date:"d.m.Y H:i" }}</li>
+    {% empty %}
+        <li>Вы еще ничего не покупали.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
